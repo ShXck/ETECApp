@@ -9,7 +9,7 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/Theme.AppCompat.Light">
+        android:theme="@style/Xawyer">
         <activity android:name=".LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -31,6 +31,9 @@
         <activity android:name=".CenterSelectionActivity" />
         <activity android:name=".UserInfoActivity" />
         <activity android:name=".network.VerificationActivity" />
-        <activity android:name=".SearchProductsActivity"></activity>
+        <activity android:name=".SearchProductsActivity" />
+        <activity android:name=".ResultViewActivity" />
+        <activity android:name=".ShoppingCartActivity"></activity>
     </application>
+
 </manifest>

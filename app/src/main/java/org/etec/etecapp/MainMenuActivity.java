@@ -41,6 +41,8 @@ public class MainMenuActivity extends AppCompatActivity {
                         startActivity(search_products);
                         break;
                     case 1:
+                        Intent shopping_cart = new Intent(MainMenuActivity.this, ShoppingCartActivity.class);
+                        startActivity(shopping_cart);
                         break;
                     case 2:
                         break;
