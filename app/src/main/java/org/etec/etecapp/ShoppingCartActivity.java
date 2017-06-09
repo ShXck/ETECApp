@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.NumberPicker;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.etec.etecapp.network.JSONHandler;
 import org.etec.etecapp.network.RequestManager;
@@ -139,7 +140,7 @@ public class ShoppingCartActivity extends AppCompatActivity {
         builder.setTitle("Métodos de pago");
         builder.setMessage("Selecciona un método de pago.");
 
-        String[] options = {"Tarjeta de crédito" , "Tarjeta de débito", "Paypal", "Bitcoin"};
+        String[] options = {"Tarjeta de crédito" , "Tarjeta de débito", "Paypal"};
         final ListView list = new ListView(this);
         list.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
         list.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, options));
@@ -175,6 +176,8 @@ public class ShoppingCartActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int which) {
                 request_buy();
                 dialog.dismiss();
+                Toast.makeText(getApplicationContext(), "Compra exitosa", Toast.LENGTH_SHORT).show();
+                back_to_menu();
             }
         });
 
@@ -199,10 +202,20 @@ public class ShoppingCartActivity extends AppCompatActivity {
     }
 
     /**
+     * Lleva de vuelta al menú principal.
+     */
+    private void back_to_menu(){
+        Intent menu = new Intent(this, MainMenuActivity.class);
+        menu.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(menu);
+        finish();
+    }
+
+    /**
      * Petición para iniciar el desplazamiento del paquete.
      */
     private void request_buy(){
-        RequestManager.POST(LoginActivity.name + "buy","");
+        RequestManager.POST(LoginActivity.name + "/buy","");
     }
 
     /**

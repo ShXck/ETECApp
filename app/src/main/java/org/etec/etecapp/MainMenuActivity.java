@@ -45,6 +45,8 @@ public class MainMenuActivity extends AppCompatActivity {
                         startActivity(shopping_cart);
                         break;
                     case 2:
+                        Intent status = new Intent(MainMenuActivity.this, PackageStatusActivity.class);
+                        startActivity(status);
                         break;
                     case 3:
                         Intent user_info = new Intent(MainMenuActivity.this, UserInfoActivity.class);

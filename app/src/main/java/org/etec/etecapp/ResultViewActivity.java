@@ -2,6 +2,7 @@ package org.etec.etecapp;
 
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -13,6 +14,7 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.NumberPicker;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.etec.etecapp.network.JSONHandler;
 import org.etec.etecapp.network.RequestManager;
@@ -124,6 +126,8 @@ public class ResultViewActivity extends AppCompatActivity implements NumberPicke
                 quantity = picker.getValue();
                 dialog.dismiss();
                 send_product_specs();
+                back_to_search();
+                Toast.makeText(getApplicationContext(), "Producto añadido a tu carrito", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -155,6 +159,16 @@ public class ResultViewActivity extends AppCompatActivity implements NumberPicke
      */
     private void send_product_specs(){
         RequestManager.POST(LoginActivity.name + "/add", JSONHandler.build_cart_item_info(SearchProductsActivity.product_selected,quantity,store_selected));
+    }
+
+    /**
+     * Se devuelve a la ventana de búsqueda.
+     */
+    private void back_to_search(){
+        Intent search = new Intent(this, SearchProductsActivity.class);
+        search.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(search);
+        finish();
     }
 
     @Override

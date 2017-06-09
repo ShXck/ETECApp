@@ -33,7 +33,8 @@
         <activity android:name=".network.VerificationActivity" />
         <activity android:name=".SearchProductsActivity" />
         <activity android:name=".ResultViewActivity" />
-        <activity android:name=".ShoppingCartActivity"></activity>
+        <activity android:name=".ShoppingCartActivity" />
+        <activity android:name=".PackageStatusActivity"></activity>
     </application>
 
 </manifest>
