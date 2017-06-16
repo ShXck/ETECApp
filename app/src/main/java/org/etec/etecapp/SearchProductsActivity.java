@@ -1,17 +1,22 @@
 package org.etec.etecapp;
 
 import android.app.Dialog;
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
+import android.speech.RecognizerIntent;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.SearchView;
+import android.widget.Toast;
 
 import org.etec.etecapp.network.JSONHandler;
 import org.etec.etecapp.network.RequestManager;
@@ -19,16 +24,21 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+
 public class SearchProductsActivity extends AppCompatActivity implements SearchView.OnQueryTextListener{
 
     private SearchView search_view;
     private ListView products_list;
     private ArrayAdapter adapter;
+    private ImageButton speak_button;
 
     private String sort_algo;
     private String search_algo;
     public static String product_selected;
     private String order;
+
+    private static final int RECOGNIZE_SPEECH_ACTIVITY = 100;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,20 +49,28 @@ public class SearchProductsActivity extends AppCompatActivity implements SearchV
         search_view = (SearchView)findViewById(R.id.search_panel);
         products_list = (ListView)findViewById(R.id.products_list);
         adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1);
+        speak_button = (ImageButton)findViewById(R.id.speak_button);
         products_list.setAdapter(adapter);
         products_list.setTextFilterEnabled(true);
 
         request_list();
         set_search_view();
-        set_list_listener();
+        set_listeners();
     }
 
-    private void set_list_listener() {
+    private void set_listeners() {
         products_list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 product_selected = (String)parent.getItemAtPosition(position);
                 show_sort_method_options();
+            }
+        });
+
+        speak_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                record();
             }
         });
     }
@@ -193,6 +211,58 @@ public class SearchProductsActivity extends AppCompatActivity implements SearchV
      */
     public void send_specs(){
         RequestManager.POST("search", JSONHandler.build_search_specs(sort_algo,search_algo, order, product_selected));
+    }
+
+    /**
+     * Inicia el reconocimiento por voz.
+     */
+    public void record(){
+        Intent intentActionRecognizeSpeech = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+        intentActionRecognizeSpeech.putExtra(
+                RecognizerIntent.EXTRA_LANGUAGE_MODEL, "es-MX");
+        try {
+            startActivityForResult(intentActionRecognizeSpeech, RECOGNIZE_SPEECH_ACTIVITY);
+        } catch (ActivityNotFoundException a) {
+            Toast.makeText(getApplicationContext(),
+                    "Tú dispositivo no soporta el reconocimiento por voz", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        switch (requestCode) {
+            case RECOGNIZE_SPEECH_ACTIVITY:
+
+                if (resultCode == RESULT_OK && data != null) {
+                    ArrayList<String> speech = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+                    String strSpeech2Text = speech.get(0);
+                    check_recorded_product(strSpeech2Text.toLowerCase());
+                    Log.i("Recorded", strSpeech2Text);
+                }
+                break;
+        }
+    }
+
+    /**
+     * Verifica que el producto que se grabó, se encuentra en la lista.
+     */
+    private void check_recorded_product(String recorded_txt){
+
+        boolean found = false;
+
+        for (int i = 0; i < adapter.getCount(); i++){
+            String current = (String) adapter.getItem(i);
+            if (current.toLowerCase().equals(recorded_txt)){
+                product_selected = (String) adapter.getItem(i);
+                found = true;
+                show_sort_method_options();
+                break;
+            }
+        }
+
+        if (!found) Toast.makeText(getApplicationContext(), recorded_txt + " no fue encontrado, intenta de nuevo", Toast.LENGTH_SHORT).show();
     }
 
     @Override

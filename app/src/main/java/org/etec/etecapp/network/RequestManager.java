@@ -17,8 +17,8 @@ public class RequestManager {
 
     public static void POST(String parameter, String data){
 
-        //String URL =  "http://192.168.1.6:7500/ETECServer/etec/user/" + parameter;
-        String URL =  "http://172.19.12.172:7500/ETECServer/etec/user/" + parameter;
+        String URL =  "http://192.168.1.6:7500/ETECServer/etec/user/" + parameter;
+        //String URL =  "http://172.19.12.172:7500/ETECServer/etec/user/" + parameter;
 
         try{
             MediaType JSON = MediaType.parse("application/json; charset=utf-8");
@@ -52,8 +52,8 @@ public class RequestManager {
 
     public static void DELETE(String parameter, String data){
 
-        //String URL =  "http://192.168.1.6:7500/ETECServer/etec/user/" + parameter;
-        String URL =  "http://172.19.12.172:7500/ETECServer/etec/user/" + parameter;
+        String URL =  "http://192.168.1.6:7500/ETECServer/etec/user/" + parameter;
+        //String URL =  "http://172.19.12.172:7500/ETECServer/etec/user/" + parameter;
 
         try{
             MediaType JSON = MediaType.parse("application/json; charset=utf-8");
@@ -87,8 +87,8 @@ public class RequestManager {
 
     public static void GET(String parameter){
 
-        //String URL =  "http://192.168.1.6:7500/ETECServer/etec/user/" + parameter;
-        String URL =  "http://172.19.12.172:7500/ETECServer/etec/user/" + parameter;
+        String URL =  "http://192.168.1.6:7500/ETECServer/etec/user/" + parameter;
+        //String URL =  "http://172.19.12.172:7500/ETECServer/etec/user/" + parameter;
 
         Request request = new Request.Builder()
                 .url(URL)
@@ -118,8 +118,8 @@ public class RequestManager {
      */
     public static void PUT(String parameter, String data){
 
-        //String URL =  "http://192.168.1.6:7500/ETECServer/etec/user/" + parameter;
-        String URL =  "http://172.19.12.172:7500/ETECServer/etec/user/" + parameter;
+        String URL =  "http://192.168.1.6:7500/ETECServer/etec/user/" + parameter;
+        //String URL =  "http://172.19.12.172:7500/ETECServer/etec/user/" + parameter;
 
         try{
             MediaType JSON = MediaType.parse("application/json; charset=utf-8");
